@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="MicroBankingSystem.Api/MicroBankingSystem.Api.csproj" />
+  <Project Path="MicroBankingSystem.Application/MicroBankingSystem.Application.csproj" />
+  <Project Path="MicroBankingSystem.domain/MicroBankingSystem.domain.csproj" />
+  <Project Path="MicroBankingSystem.Infrastructure/MicroBankingSystem.Infrastructure.csproj" />
+</Solution>
