@@ -8,7 +8,7 @@ namespace MicroBankingSystem.Application.DTOs.Transaction
     public class TransactionResponseDTO
     {
         public string TransactionsType { get; set; } = default!;
-        public string ReferenceNumber { get; set; } = default!;
+        public Guid ReferenceNumber { get; set; } = default!;
         public string FromAccountNumber { get; set; } = default!;
         public string ToAccountNumber { get; set; } = default!;
         public decimal Amount { get; set; }

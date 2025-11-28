@@ -15,8 +15,7 @@ namespace MicroBankingSystem.Application.MappingProfiles
                 .ForMember(dest=>dest.ToAccountNumber,opt=>opt.MapFrom(src=>src.ToAccount.AccountNumber))
                 .ForMember(dest=>dest.FromAccountNumber,opt=>opt.MapFrom(src=>src.FromAccount.AccountNumber))
                 .ForMember(dest=>dest.TransactionsType,opt=>opt.MapFrom(src=>src.TransactionType.ToString()))
-                .ForMember(dest=>dest.Status,opt=>opt.MapFrom(src=>src.Status.ToString()))
-                .ForMember(dest=>dest.ReferenceNumber,opt=>opt.MapFrom(src=>src.ReferenceNumber.ToString()));
+                .ForMember(dest=>dest.Status,opt=>opt.MapFrom(src=>src.Status.ToString()));
 
         }
     }
