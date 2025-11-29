@@ -2,9 +2,11 @@ using MicroBankingSystem.Application.Contracts.Repositories;
 using MicroBankingSystem.Application.Contracts.Services;
 using MicroBankingSystem.Application.MappingProfiles;
 using MicroBankingSystem.Application.Services;
+using MicroBankingSystem.domain.Identity;
 using MicroBankingSystem.Infrastructure.Data;
 using MicroBankingSystem.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,6 +24,9 @@ builder.Services.AddOpenApi();
 builder.Services.AddDbContext<AppDbContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+// Auto Mapper Configurations
+builder.Services.AddAutoMapper(cfg => { }, typeof(AccountProfile).Assembly);
+
 
 // Dependency Injection for Repositories
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
@@ -34,8 +39,10 @@ builder.Services.AddScoped<ITransactionService, TransactionService>();
 builder.Services.AddScoped<IUserService, UserService>();
 
 
-// Auto Mapper Configurations
-builder.Services.AddAutoMapper( cfg=> { },typeof(AccountProfile).Assembly);
+// Identity Configuration
+builder.Services.AddIdentity<ApplicationUser,IdentityRole>()
+    .AddEntityFrameworkStores<AppDbContext>()
+    .AddDefaultTokenProviders();
 
 
 // JWT Configration
