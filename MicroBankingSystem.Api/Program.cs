@@ -1,8 +1,10 @@
+using FluentValidation;
 using MicroBankingSystem.Api.Middlewares;
 using MicroBankingSystem.Application.Contracts.Repositories;
 using MicroBankingSystem.Application.Contracts.Services;
 using MicroBankingSystem.Application.MappingProfiles;
 using MicroBankingSystem.Application.Services;
+using MicroBankingSystem.Application.Validators;
 using MicroBankingSystem.domain.Identity;
 using MicroBankingSystem.Infrastructure.Data;
 using MicroBankingSystem.Infrastructure.Repositories;
@@ -12,6 +14,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using SharpGrip.FluentValidation.AutoValidation.Mvc.Extensions;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,6 +22,10 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
+
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddValidatorsFromAssemblyContaining<RegisterValidator>();
+
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
