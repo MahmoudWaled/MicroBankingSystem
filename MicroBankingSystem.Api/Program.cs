@@ -1,3 +1,4 @@
+using MicroBankingSystem.Api.Middlewares;
 using MicroBankingSystem.Application.Contracts.Repositories;
 using MicroBankingSystem.Application.Contracts.Services;
 using MicroBankingSystem.Application.MappingProfiles;
@@ -66,7 +67,8 @@ builder.Services.AddAuthentication(options =>
 
 
 var app = builder.Build();
-
+app.UseMiddleware<CustomeExeptionHandler>();
+app.UseMiddleware<AuthenticationResponseMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

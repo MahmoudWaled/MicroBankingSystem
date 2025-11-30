@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using MicroBankingSystem.Application.Contracts.Services;
 using MicroBankingSystem.Application.DTOs.Auth;
+using MicroBankingSystem.domain.Exceptions;
 using MicroBankingSystem.domain.Identity;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -24,8 +26,8 @@ namespace MicroBankingSystem.Application.Services
         public async Task<AuthResponseDTO> LoginAsync(LoginDTO loginDTO)
         {
             if (loginDTO == null)
-                throw new ArgumentNullException(nameof(loginDTO));
-            
+                throw new BadRequestException("Login data is required.");
+
             var user = await  _userManager.FindByEmailAsync( loginDTO.Email);
             if (user == null || !await _userManager.CheckPasswordAsync(user , loginDTO.Password))
                 return new AuthResponseDTO
@@ -34,7 +36,7 @@ namespace MicroBankingSystem.Application.Services
                     Message = "Invalid email or password."
                 };
 
-            var token = GenerateJwtToken(user);
+            var token = GenerateJwtToken(user); 
 
             return new AuthResponseDTO
             {
@@ -52,18 +54,18 @@ namespace MicroBankingSystem.Application.Services
         {
             
                 if (registerDTO == null)
-                    throw new ArgumentNullException(nameof(registerDTO));
+                    throw new BadRequestException("Registration data is required.");
 
-                var user = await _userManager.FindByEmailAsync(registerDTO.Email);
+            var user = await _userManager.FindByEmailAsync(registerDTO.Email);
                 if (user != null)
-                    throw new Exception("User with this email already exists.");
+                    throw new ConflictException("User with this email already exists.");
 
                 user = _mapper.Map<ApplicationUser>(registerDTO);
                 var result = await _userManager.CreateAsync(user, registerDTO.Password);
                 if (!result.Succeeded)
                 {
                     var errors = string.Join(", ", result.Errors.Select(e=>e.Description));
-                    throw new Exception($"User creation failed: {errors}");
+                    throw new FailedException($"User creation failed: {errors}");
                 }
                 return new AuthResponseDTO
                 {
